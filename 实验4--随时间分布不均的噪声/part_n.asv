@@ -1,0 +1,35 @@
+%先取出最后10w个点
+a=x(end-100000:end);
+%b是加入噪声的数据   加入5dB噪声
+b=xn(end-100000:end);
+%d是加入噪声的数据  加入10-dB噪声
+d=xn1(end-100000:end);
+%e是加入噪声的数据  加入10dB噪声
+e=xn2(end-100000:end);
+%当大于0时，加入噪声数据b，否则为d
+%当-1<x<0时，加入噪声数据e，否则为d
+c=[];
+for i=1:length(a)
+    if(a(i)>0)
+     c(i)=b(i);
+    elseif(a(i)>-1 & a(i)<=0)
+      c(i)=e(i); 
+    else c(i)=d(i);
+    end
+end
+%大于2时加入噪声
+%第一步计算相关系数  0.9234    0.0341   误码率 0.1902
+figure(1)
+plot(a,c','.')
+corr2(a,c')
+corr2(CW(a,c'),Wout)
+corr2(CW3(a),CW3(c'))
+%然后找一个全部加白噪声的数据  c=1.38时   0.9268 0.0338  误码率0.2063
+
+
+%第二次实验14dB   
+figure(2)
+plot(x(end-100000:end),xn(end-100000:end),'.')
+corr2(x(end-100000:end),xn(end-100000:end))
+corr2(CW(x(end-100000:end),xn(end-100000:end)),Wout)
+corr2(CW3(x(end-100000:end)),CW3(xn(end-100000:end)))
